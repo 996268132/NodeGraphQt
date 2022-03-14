@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from Qt import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets
 
 from ..constants import (Z_VAL_NODE, NODE_WIDTH, NODE_HEIGHT, ITEM_CACHE_MODE)
 

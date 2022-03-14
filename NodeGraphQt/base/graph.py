@@ -6,7 +6,7 @@ import json
 import os
 import re
 
-from Qt import QtCore, QtWidgets, QtGui
+from PySide6 import QtCore, QtWidgets, QtGui
 
 from .commands import (NodeAddedCmd,
                        NodeRemovedCmd,
@@ -119,7 +119,7 @@ class NodeGraph(QtCore.QObject):
         self._model = NodeGraphModel()
         self._viewer = NodeViewer()
         self._node_factory = NodeFactory()
-        self._undo_stack = QtWidgets.QUndoStack(self)
+        self._undo_stack = QtGui.QUndoStack(self)
         self._current_node_space = None
         self._editable = True
 
@@ -136,7 +136,7 @@ class NodeGraph(QtCore.QObject):
         Connect up all the signals and slots here.
         """
         # hard coded tab search.
-        tab = QtWidgets.QShortcut(
+        tab = QtGui.QShortcut(
             QtGui.QKeySequence(QtCore.Qt.Key_Tab), self._viewer)
         tab.activated.connect(self._toggle_tab_search)
         self._viewer.need_show_tab_search.connect(self._toggle_tab_search)
@@ -601,7 +601,7 @@ class NodeGraph(QtCore.QObject):
             :meth:`NodeGraph.end_undo()`
 
         Returns:
-            QtWidgets.QUndoStack: undo stack.
+            QtGui.QUndoStack: undo stack.
         """
         return self._undo_stack
 

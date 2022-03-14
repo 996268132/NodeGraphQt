@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 import math
 
-import Qt
-from Qt import QtGui, QtCore, QtWidgets
+import PySide6
+from PySide6 import QtGui, QtCore, QtWidgets
 
 # use QOpenGLWidget instead of the deprecated QGLWidget to avoid probelms with Wayland
-if Qt.IsPySide2:
-    from PySide2.QtWidgets import QOpenGLWidget
-elif Qt.IsPyQt5:
-    from PyQt5.QtWidgets import QOpenGLWidget
+#if PyQt5.IsPySide2:
+#    from PySide2.QtWidgets import QOpenGLWidget
+#elif PyQt5.IsPyQt5:
+#    from PyQt5.QtWidgets import QOpenGLWidget
+from PySide6.QtOpenGLWidgets import QOpenGLWidget
 
 from .dialogs import BaseDialog, FileDialog
 from .scene import NodeScene
@@ -95,7 +96,7 @@ class NodeViewer(QtWidgets.QGraphicsView):
         self._SLICER_PIPE.setVisible(False)
         self.scene().addItem(self._SLICER_PIPE)
 
-        self._undo_stack = QtWidgets.QUndoStack(self)
+        self._undo_stack = QtGui.QUndoStack(self)
         self._search_widget = TabSearchMenuWidget()
         self._search_widget.search_submitted.connect(self._on_search_submitted)
 

@@ -3,7 +3,7 @@ from .dialogs import FileDialog
 from .properties import _ValueEdit
 from .stylesheet import *
 
-from Qt import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets
 from ..constants import Z_VAL_NODE_WIDGET
 from ..errors import NodeWidgetError
 

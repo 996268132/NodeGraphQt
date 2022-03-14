@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from Qt import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 from .stylesheet import STYLE_QMENU
 
 
@@ -40,7 +40,7 @@ class BaseMenu(QtWidgets.QMenu):
         return menus
 
 
-class GraphAction(QtWidgets.QAction):
+class GraphAction(QtGui.QAction):
 
     executed = QtCore.Signal(object)
 

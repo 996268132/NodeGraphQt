@@ -1,6 +1,5 @@
 #!/usr/bin/python
-from Qt import QtWidgets, QtCore, QtGui, QtCompat
-
+from PySide6 import QtWidgets, QtCore, QtGui#, QtCompat
 from .properties import NodePropWidget
 
 
@@ -50,10 +49,10 @@ class PropertiesList(QtWidgets.QTableWidget):
         self.setShowGrid(False)
         self.verticalHeader().hide()
         self.horizontalHeader().hide()
-        QtCompat.QHeaderView.setSectionResizeMode(
-            self.verticalHeader(), QtWidgets.QHeaderView.ResizeToContents)
-        QtCompat.QHeaderView.setSectionResizeMode(
-            self.horizontalHeader(), 0, QtWidgets.QHeaderView.Stretch)
+        #QtCompat.QHeaderView.setSectionResizeMode(
+        #    self.verticalHeader(), QtWidgets.QHeaderView.ResizeToContents)
+        #QtCompat.QHeaderView.setSectionResizeMode(
+        #    self.horizontalHeader(), 0, QtWidgets.QHeaderView.Stretch)
         self.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
 
     def wheelEvent(self, event):

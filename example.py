@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from Qt import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 from NodeGraphQt import (NodeGraph,
                          BaseNode,

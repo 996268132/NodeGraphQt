@@ -482,7 +482,7 @@ class NodeViewer(QtWidgets.QGraphicsView):
             delta = event.angleDelta().y()
             if delta == 0:
                 delta = event.angleDelta().x()
-        self._set_viewer_zoom(delta, pos=event.pos())
+        self._set_viewer_zoom(delta, pos=event.pixelDelta())
 
     def dropEvent(self, event):
         pos = self.mapToScene(event.pos())

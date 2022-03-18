@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from Qt import QtWidgets, QtCore
+#from Qt import QtWidgets, QtCore
+from PySide6 import QtGui, QtCore, QtWidgets
 
 from NodeGraphQt import (NodeGraph,
                          PropertiesBinWidget,

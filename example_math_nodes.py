@@ -48,7 +48,7 @@ if __name__ == '__main__':
     [graph.register_node(n) for n in Nodes]
 
     # load preset session
-    graph.load_session(join('example_nodes', 'networks', 'example.nodes'))
+    graph.load_session(join('example_nodes', 'networks', 'math_example.nodes'))
 
     # update nodes
     update_nodes_by_down(graph.all_nodes())

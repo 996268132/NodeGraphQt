@@ -1,8 +1,13 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-import os
+
+
+import sys
+sys.path.append("..")
 
 from PySide6 import QtCore, QtGui, QtWidgets
+
+
+import sys
+sys.path.append("..")
 
 from NodeGraphQt import (NodeGraph,
                          BaseNode,
@@ -13,7 +18,6 @@ from NodeGraphQt import (NodeGraph,
 
 # import example nodes from the "example_nodes" package
 from example_nodes import basic_nodes, widget_nodes
-
 
 def draw_triangle_port(painter, rect, info):
     """
@@ -110,120 +114,74 @@ def draw_square_port(painter, rect, info):
 
     painter.restore()
 
+def init_node_menu(graph, nodes):
+    root_menu = graph.get_context_menu('graph')
+    node_menu = root_menu.add_menu('&Node')
+    for node in nodes:
+        node_menu.add_command(node.NODE_NAME, create_node,'')
 
-class MyNode(BaseNode):
-    """
-    example test node.
-    """
+def create_node(graph):
+    pass
 
-    # set a unique node identifier.
+class GNode(BaseNode):
     __identifier__ = 'com.chantasticvfx'
-
-    # set the initial default node name.
-    NODE_NAME = 'my node'
-
+    NODE_NAME = 'GNode'
     def __init__(self):
-        super(MyNode, self).__init__()
+        super(GNode, self).__init__()
         self.set_color(25, 58, 51)
 
-        # create input and output port.
-        self.add_input('in port', color=(200, 10, 0))
-        self.add_output('default port')
-        self.add_output('square port', painter_func=draw_square_port)
-        self.add_output('triangle port', painter_func=draw_triangle_port)
+        #self.add_input('SkillID', color=(200, 10, 0))
+        self.add_input('TitleIn', multi_input=False, display_name=False,
+                  color=(255, 10, 0), data_type='Title', painter_func=draw_square_port)
+        self.add_output('TitleOut', multi_output=True, display_name=False,
+                    color=(255, 10, 0), data_type='Title', painter_func=draw_square_port)
+
+class GSkill(BaseNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GSkill'
+    def __init__(self):
+        super(GSkill, self).__init__()
+        self.set_color(25, 58, 51)
+
+        #self.add_input('SkillID', color=(200, 10, 0))
+        self.add_output('TitleOut', multi_output=True, display_name=False,
+                        color=(255, 10, 0), data_type='Title', painter_func=draw_square_port)
+        self.add_output('SkillID')
+        self.add_output('SkillStaTime')
+        self.add_output('SkillEndTime')
+
+class GCreateBullet(GNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GCreateBullet'
+    def __init__(self):
+        super(GCreateBullet, self).__init__()
+        self.set_color(25, 58, 51)
+        self.add_input('BulletID')
+        self.add_text_input('BulletID', 'bullet id', tab='widgets')
 
 
-if __name__ == '__main__':
-    QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
-    app = QtWidgets.QApplication([])
-
-    # create node graph.
-    graph = NodeGraph()
-
-    # set up default menu and commands.
-    setup_context_menu(graph)
-
-    # widget used for the node graph.
-    graph_widget = graph.widget
-    graph_widget.resize(1100, 800)
-    graph_widget.show()
+class GSkillMove(GNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GSkillMove'
+    def __init__(self):
+        super(GSkillMove, self).__init__()
+        self.set_color(25, 58, 51)
+        self.add_input("X")
+        self.add_input("Y")
+        self.add_input("Z")
 
 
-    # show the properties bin when a node is "double clicked" in the graph.
-    properties_bin = PropertiesBinWidget(node_graph=graph)
-    properties_bin.setWindowFlags(QtCore.Qt.Tool)
-    def show_prop_bin(node):
-        if not properties_bin.isVisible():
-            properties_bin.show()
-    graph.node_double_clicked.connect(show_prop_bin)
+class GDoDamage(GNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GDoDamage'
+    def __init__(self):
+        super(GDoDamage, self).__init__()
+        self.set_color(25, 58, 51)
+        self.add_input('SkillID')
 
-
-    # show the nodes list when a node is "double clicked" in the graph.
-    node_tree = NodeTreeWidget(node_graph=graph)
-    def show_nodes_list(node):
-        if not node_tree.isVisible():
-            node_tree.update()
-            node_tree.show()
-    graph.node_double_clicked.connect(show_nodes_list)
-
-
-    # registered nodes.
-    nodes_to_reg = [
-        BackdropNode, MyNode,
-        basic_nodes.FooNode,
-        basic_nodes.BarNode,
-        widget_nodes.DropdownMenuNode,
-        widget_nodes.TextInputNode,
-        widget_nodes.CheckboxNode
-    ]
-    graph.register_nodes(nodes_to_reg)
-
-    my_node = graph.create_node(
-        'com.chantasticvfx.MyNode',
-        name='chantastic!',
-        color='#0a1e20',
-        text_color='#feab20'
-    )
-
-    foo_node = graph.create_node(
-        'com.chantasticvfx.FooNode',
-        name='node')
-    foo_node.set_disabled(True)
-
-    # create example "TextInputNode".
-    text_node = graph.create_node(
-        'com.chantasticvfx.TextInputNode',
-        name='text node')
-
-    # create example "TextInputNode".
-    checkbox_node = graph.create_node(
-        'com.chantasticvfx.CheckboxNode',
-        name='checkbox node')
-
-    # create node with a combo box menu.
-    menu_node = graph.create_node(
-        'com.chantasticvfx.DropdownMenuNode',
-        name='menu node')
-
-    # change node icon.
-    this_path = os.path.dirname(os.path.abspath(__file__))
-    icon = os.path.join(this_path, 'example_nodes', 'pear.png')
-    bar_node = graph.create_node('com.chantasticvfx.BarNode')
-    bar_node.set_icon(icon)
-    bar_node.set_name('icon node')
-
-    # connect the nodes.
-    foo_node.set_output(0, bar_node.input(2))
-    menu_node.set_input(0, bar_node.output(1))
-    bar_node.set_input(0, text_node.output(0))
-
-    # auto layout nodes.
-    graph.auto_layout_nodes()
-
-    # wrap a backdrop node.
-    backdrop_node = graph.create_node('nodeGraphQt.nodes.BackdropNode')
-    backdrop_node.wrap_nodes([text_node, checkbox_node])
-
-    graph.fit_to_selection()
-
-    app.exec_()
+class GDelay(GNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GDelay'
+    def __init__(self):
+        super(GDelay, self).__init__()
+        self.add_text_input('Time', 'time delay', tab='widgets')

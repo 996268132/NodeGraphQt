@@ -2,7 +2,7 @@ import copy
 import time
 import traceback
 
-from Qt import QtCore, QtWidgets, QtGui
+from PySide6 import QtCore, QtWidgets, QtGui
 
 from NodeGraphQt import BaseNode, Port
 from .utils import update_node_down_stream, get_data_type, CryptoColors

@@ -61,20 +61,20 @@ if __name__ == '__main__':
 
     # registered nodes.
     nodes_to_reg = [
-        BackdropNode,Nodes.GSkill,Nodes.GCreateBullet,Nodes.GSkillMove,Nodes.GDoDamage,Nodes.GDelay,
-        basic_nodes.FooNode,
-        basic_nodes.BarNode,
-        widget_nodes.DropdownMenuNode,
-        widget_nodes.TextInputNode,
-        widget_nodes.CheckboxNode
+        Nodes.GSkill,Nodes.GCreateBullet,Nodes.GSkillMove,Nodes.GDoDamage,Nodes.GDelay,
+        Nodes.GAddBuff,Nodes.GCreateNpc,
+        #BackdropNode
+        #basic_nodes.FooNode,
+        #basic_nodes.BarNode,
+        #widget_nodes.DropdownMenuNode,
+        #widget_nodes.TextInputNode,
+        #widget_nodes.CheckboxNode
     ]
     graph.register_nodes(nodes_to_reg)
 
-    nodes = [
-        Nodes.GSkill, Nodes.GCreateBullet, Nodes.GSkillMove, Nodes.GDoDamage, Nodes.GDelay,
-        BackdropNode
-    ]
-    Nodes.init_node_menu(graph, nodes)
+    #Nodes
+    Nodes.init_node_menu(graph, nodes_to_reg)
+    Nodes.graph = graph
 
     '''
     skill_node = graph.create_node('com.chantasticvfx.GSkill')
@@ -106,5 +106,5 @@ if __name__ == '__main__':
     backdrop_node.wrap_nodes([createBullet_node, damage_node])
     '''
     graph.fit_to_selection()
-
+    graph.widget.setWindowTitle("LogicTreeEditor")
     app.exec_()

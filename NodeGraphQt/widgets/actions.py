@@ -20,7 +20,7 @@ class BaseMenu(QtWidgets.QMenu):
 
     def get_menu(self, name, node_id=None):
         for action in self.actions():
-            menu = action.menu()
+            menu = None #action.menu()
             if not menu:
                 continue
             if menu.title() == name:
@@ -32,17 +32,17 @@ class BaseMenu(QtWidgets.QMenu):
 
     def get_menus(self, node_class):
         menus = []
-        for action in self.actions():
-            menu = action.menu()
-            if menu.node_class:
-                if issubclass(menu.node_class, node_class):
-                    menus.append(menu)
+        #for action in self.actions():
+            #menu = action.menu()
+            #if menu.node_class:
+            #    if issubclass(menu.node_class, node_class):
+            #        menus.append(menu)
         return menus
 
 
 class GraphAction(QtGui.QAction):
 
-    executed = QtCore.Signal(object)
+    executed = QtCore.Signal(object, object)
 
     def __init__(self, *args, **kwargs):
         super(GraphAction, self).__init__(*args, **kwargs)
@@ -50,7 +50,7 @@ class GraphAction(QtGui.QAction):
         self.triggered.connect(self._on_triggered)
 
     def _on_triggered(self):
-        self.executed.emit(self.graph)
+        self.executed.emit(self.graph,self)
 
     def get_action(self, name):
         for action in self.qmenu.actions():

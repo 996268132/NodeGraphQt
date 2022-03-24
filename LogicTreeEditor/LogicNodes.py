@@ -114,14 +114,20 @@ def draw_square_port(painter, rect, info):
 
     painter.restore()
 
+graph = None
+
 def init_node_menu(graph, nodes):
     root_menu = graph.get_context_menu('graph')
     node_menu = root_menu.add_menu('&Node')
-    for node in nodes:
-        node_menu.add_command(node.NODE_NAME, create_node,'')
+    #node_menu = graph.context_nodes_menu()
 
-def create_node(graph):
-    pass
+    for node in nodes:
+        node_menu.add_command(node.NODE_NAME, create_node,node.NODE_NAME)
+        #node_menu.add_command(node.NODE_NAME, create_node, node_class=node)
+
+def create_node(graph,action):
+    print(action.text())
+    graph.create_node('com.chantasticvfx.' + action.text())
 
 class GNode(BaseNode):
     __identifier__ = 'com.chantasticvfx'
@@ -136,19 +142,28 @@ class GNode(BaseNode):
         self.add_output('TitleOut', multi_output=True, display_name=False,
                     color=(255, 10, 0), data_type='Title', painter_func=draw_square_port)
 
-class GSkill(BaseNode):
+class GRoot(BaseNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GRoot'
+    def __init__(self):
+        super(GRoot, self).__init__()
+        self.set_color(25, 58, 51)
+        self.add_output('TitleOut', multi_output=True, display_name=False,
+                    color=(255, 10, 0), data_type='Title', painter_func=draw_square_port)
+
+class GSkill(GRoot):
     __identifier__ = 'com.chantasticvfx'
     NODE_NAME = 'GSkill'
     def __init__(self):
         super(GSkill, self).__init__()
-        self.set_color(25, 58, 51)
-
-        #self.add_input('SkillID', color=(200, 10, 0))
-        self.add_output('TitleOut', multi_output=True, display_name=False,
-                        color=(255, 10, 0), data_type='Title', painter_func=draw_square_port)
+        self.set_color(255, 58, 51)
+        self.add_output('AvatarID')
         self.add_output('SkillID')
+        self.add_output('TargetID')
         self.add_output('SkillStaTime')
         self.add_output('SkillEndTime')
+        self.add_output('SkillStartPos')
+        self.add_output('SkillEndPos')
 
 class GCreateBullet(GNode):
     __identifier__ = 'com.chantasticvfx'
@@ -166,9 +181,7 @@ class GSkillMove(GNode):
     def __init__(self):
         super(GSkillMove, self).__init__()
         self.set_color(25, 58, 51)
-        self.add_input("X")
-        self.add_input("Y")
-        self.add_input("Z")
+        self.add_input("Pos")
 
 
 class GDoDamage(GNode):
@@ -185,3 +198,22 @@ class GDelay(GNode):
     def __init__(self):
         super(GDelay, self).__init__()
         self.add_text_input('Time', 'time delay', tab='widgets')
+
+class GAddBuff(GNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GAddBuff'
+    def __init__(self):
+        super(GAddBuff, self).__init__()
+        self.set_color(25, 58, 51)
+        self.add_input('TargetID')
+        self.add_input('BuffID')
+        self.add_text_input('BuffID', 'buff id', tab='widgets')
+
+class GCreateNpc(GNode):
+    __identifier__ = 'com.chantasticvfx'
+    NODE_NAME = 'GCreateNpc'
+    def __init__(self):
+        super(GCreateNpc, self).__init__()
+        self.set_color(25, 58, 51)
+        self.add_text_input('NpcID', 'npc id', tab='widgets')
+        self.add_input("Pos")
